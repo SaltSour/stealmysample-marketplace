@@ -1,0 +1,113 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+/.yarn
+
+# testing
+/coverage
+/.nyc_output
+/cypress/videos
+/cypress/screenshots
+
+# next.js
+/.next/
+/out/
+.next-env
+
+# production
+/build
+/dist
+
+# misc
+.DS_Store
+*.pem
+.npmrc
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# uploads and media
+/public/uploads/
+/uploads/
+/public/temp/
+/temp/
+/public/media/
+/media/
+
+# database
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+
+# audio files
+*.wav
+*.mp3
+*.aiff
+*.aif
+*.flac
+*.m4a
+*.ogg
+
+# temp files
+*.temp
+*.tmp
+.cache/
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# turbo
+.turbo
+
+# Sentry Config File, used for monitoring
+.sentryclirc
+
+# Sitemap Generator
+/public/sitemap*.xml
+/public/robots.txt
+
+# Performance reports
+/lighthouse-report/ 

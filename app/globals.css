@@ -1,0 +1,688 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core colors (adjust if needed) */
+    --background: 0 0% 100%; /* White background */
+    --foreground: 0 0% 9%;   /* Slightly off-black for text */
+    
+    /* Card and UI elements */
+    --card: 0 0% 98%;        /* Very light gray for cards */
+    --card-foreground: 0 0% 9%; 
+    
+    /* Primary - Red from logo */
+    --primary: 4 70% 48%;    /* #D12F25 - Red from logo */ 
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary - Black */
+    --secondary: 0 0% 0%;    /* #000000 - Black */ 
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Accent - White */
+    --accent: 0 0% 100%;     /* #FFFFFF - White */
+    --accent-foreground: 0 0% 0%;
+    
+    /* Muted - For secondary text */
+    --muted: 0 0% 60%;        /* Lighter gray for muted text */
+    --muted-foreground: 0 0% 45%; 
+    
+    /* UI elements */
+    --border: 0 0% 90%;        /* Lighter border color */
+    --input: 0 0% 95%;         /* Lighter input background */
+    --ring: 4 70% 48%;         /* Red ring for focus states */
+    --radius: 0.5rem;          /* Slightly reduced border radius to match branding */
+  }
+
+  .dark {
+    --background: 0 0% 7%;      /* Dark black background */
+    --foreground: 0 0% 98%;     /* Light text */
+    --card: 0 0% 10%;           /* Darker card */
+    --card-foreground: 0 0% 98%;
+    --muted: 0 0% 60%;
+    --muted-foreground: 0 0% 65%;
+    --border: 0 0% 15%;         /* Darker border */
+    --input: 0 0% 12%;          /* Darker input */
+    --ring: 4 70% 40%;          /* Darker red ring */
+    --accent: 0 0% 100%;        /* White accent */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}
+
+/* Updated component styles */
+@layer components {
+  /* Refined Card styles */
+  .card {
+    @apply bg-card text-card-foreground rounded-lg border border-border/70 shadow-sm; /* Softer border, subtle shadow */
+  }
+
+  /* Refined Button variants */
+  .button-primary {
+    @apply bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors rounded-lg shadow-sm hover:shadow-md;
+  }
+
+  .button-secondary {
+    @apply bg-secondary text-secondary-foreground font-medium hover:bg-secondary/90 transition-colors rounded-lg shadow-sm hover:shadow-md;
+  }
+  
+  /* Dashboard CTA buttons - new vibrant styles */
+  .dashboard-cta-primary {
+    @apply bg-gradient-to-r from-[#5F7DFF] to-[#8063FF] text-white font-medium 
+    hover:from-[#657FFF] hover:to-[#8C6DFF] transition-all duration-200 
+    rounded-lg shadow-sm shadow-primary/20 hover:shadow-md hover:shadow-primary/30 
+    hover:translate-y-[-1px] active:translate-y-[0px];
+  }
+
+  .dashboard-cta-secondary {
+    @apply bg-gradient-to-r from-[#36BFFA] to-[#45C6F7] text-white font-medium
+    hover:from-[#3CC5FF] hover:to-[#4DCCFF] transition-all duration-200 
+    rounded-lg shadow-sm shadow-secondary/20 hover:shadow-md hover:shadow-secondary/30
+    hover:translate-y-[-1px] active:translate-y-[0px];
+  }
+
+  .dashboard-cta-accent {
+    @apply bg-gradient-to-r from-[#FF7D9D] to-[#FF5F94] text-white font-medium
+    hover:from-[#FF85A3] hover:to-[#FF6599] transition-all duration-200 
+    rounded-lg shadow-sm shadow-[#FF7D9D]/20 hover:shadow-md hover:shadow-[#FF7D9D]/30
+    hover:translate-y-[-1px] active:translate-y-[0px];
+  }
+
+  .dashboard-cta-success {
+    @apply bg-gradient-to-r from-[#2DD4BF] to-[#34D399] text-white font-medium
+    hover:from-[#3DDAC5] hover:to-[#3EDC9E] transition-all duration-200 
+    rounded-lg shadow-sm shadow-[#2DD4BF]/20 hover:shadow-md hover:shadow-[#2DD4BF]/30
+    hover:translate-y-[-1px] active:translate-y-[0px];
+  }
+  
+  /* Button with outline for less prominent actions */
+  .dashboard-cta-outline {
+    @apply border-2 border-primary/30 text-primary-foreground bg-transparent font-medium
+    hover:border-primary/50 hover:bg-primary/5 transition-all duration-200
+    rounded-lg hover:translate-y-[-1px] active:translate-y-[0px];
+  }
+  
+  /* Input Field Style */
+  .input-field {
+    @apply bg-input border border-border focus:border-primary/50 focus:ring-1 focus:ring-ring rounded-lg transition-colors duration-200 ease-in-out;
+  }
+  
+  /* Text styles */
+  .heading-text {
+    @apply text-foreground font-semibold tracking-tight; /* Use semibold, tighter tracking */
+  }
+
+  .body-text {
+    @apply text-muted-foreground leading-relaxed; /* Slightly more relaxed line height */
+  }
+
+  /* Form styles */
+  .form-label {
+    @apply text-muted-foreground text-sm font-medium;
+  }
+
+  /* Icon styles */
+  .icon-primary {
+    @apply text-primary;
+  }
+
+  .icon-secondary {
+    @apply text-secondary;
+  }
+}
+
+/* Remove gradients and shadows from common elements (Keep specific ones like btn-gradient if needed) */
+.gradient-text {
+  @apply text-primary;
+}
+
+.gradient-bg {
+  @apply bg-primary/5; /* Softer gradient background */
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full hover:bg-muted;
+}
+
+/* Navigation links with neon effect */
+.nav-link {
+  @apply text-muted-foreground hover:text-foreground transition-colors;
+}
+
+/* Modern gradient text effect */
+.gradient-text-secondary {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #5F7DFF, #7D94FF, #5F7DFF);
+  background-size: 200% auto;
+  animation: shine 8s linear infinite;
+}
+
+.gradient-text-gold {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #FFD952, #FFE685, #D4A520);
+  background-size: 200% auto;
+  animation: shine 6s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Enhanced glass effect */
+.glass {
+  @apply bg-background/5 backdrop-blur-xl border border-border/10;
+}
+
+.glass:hover {
+  @apply bg-background/10 border-primary/20;
+}
+
+.glass-gold {
+  @apply bg-black/20 backdrop-blur-xl border border-white/10 transition-all duration-300;
+  box-shadow: 0 4px 20px rgba(255, 217, 82, 0.15), 0 0 2px rgba(255, 217, 82, 0.1);
+}
+
+.glass-gold:hover {
+  box-shadow: 0 4px 25px rgba(255, 217, 82, 0.25), 0 0 5px rgba(255, 217, 82, 0.15);
+  border-color: rgba(255, 217, 82, 0.2);
+  @apply bg-black/20;
+}
+
+/* Section transition styles */
+.section-blur-overlay {
+  @apply absolute inset-0 pointer-events-none;
+  background: radial-gradient(
+    100% 100% at 50% 50%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  backdrop-filter: blur(100px);
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+}
+
+.section-fade {
+  @apply relative;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+}
+
+/* Dynamic background animation */
+.animated-bg {
+  background: radial-gradient(
+    circle at center,
+    rgba(209, 47, 37, 0.12) 0%,
+    rgba(83, 109, 254, 0.06) 45%,
+    transparent 80%
+  );
+  background-size: 200% 200%;
+  animation: pulse 12s ease-in-out infinite;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 0% 0%;
+    opacity: 0.6;
+  }
+  50% {
+    background-position: 100% 100%;
+    opacity: 1;
+  }
+  100% {
+    background-position: 0% 0%;
+    opacity: 0.6;
+  }
+}
+
+/* Add new animated backgrounds */
+.animated-bg-1 {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(225, 53, 110, 0.12) 0%,
+    rgba(225, 53, 110, 0.04) 45%,
+    transparent 80%
+  );
+  animation: float1 15s ease-in-out infinite;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+}
+
+.animated-bg-2 {
+  background: radial-gradient(
+    circle at 70% 70%,
+    rgba(36, 211, 163, 0.12) 0%,
+    rgba(36, 211, 163, 0.04) 45%,
+    transparent 80%
+  );
+  animation: float2 18s ease-in-out infinite;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+}
+
+@keyframes float1 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-5%, -5%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+}
+
+@keyframes float2 {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(5%, 5%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+}
+
+/* Button effects */
+.btn-gradient {
+  @apply relative text-white font-medium;
+  background: var(--gradient-primary);
+  box-shadow: 0 4px 10px rgba(248, 45, 126, 0.3), 0 0 0 1px rgba(248, 45, 126, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(248, 45, 126, 0.4), 0 0 0 1px rgba(248, 45, 126, 0.2);
+  filter: brightness(1.1);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(248, 45, 126, 0.2), 0 0 0 1px rgba(248, 45, 126, 0.2);
+}
+
+.btn-gold {
+  @apply relative text-black font-medium;
+  background: var(--gradient-gold);
+  box-shadow: 0 4px 10px rgba(212, 165, 32, 0.3), 0 0 0 1px rgba(212, 165, 32, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(212, 165, 32, 0.4), 0 0 0 1px rgba(212, 165, 32, 0.2);
+  filter: brightness(1.1);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(212, 165, 32, 0.2), 0 0 0 1px rgba(212, 165, 32, 0.2);
+}
+
+/* Sample item styling */
+.sample-item {
+  @apply transition-all duration-300 border-b border-border/50;
+}
+
+.sample-item:hover {
+  @apply border-primary/30 bg-black/5;
+}
+
+/* Gem-like shine effect for special elements */
+.gem-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.gem-shine::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.1) 40%,
+    rgba(255, 255, 255, 0.5) 46%,
+    rgba(255, 255, 255, 0.1) 52%,
+    rgba(255, 255, 255, 0.03) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: gemshine 6s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gold-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-shine::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 217, 82, 0) 0%,
+    rgba(255, 217, 82, 0.03) 20%,
+    rgba(255, 217, 82, 0.1) 40%,
+    rgba(255, 217, 82, 0.5) 46%,
+    rgba(255, 217, 82, 0.1) 52%,
+    rgba(255, 217, 82, 0.03) 60%,
+    rgba(255, 217, 82, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: gemshine 8s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Faceted gem effect */
+.gem-facet {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--card), color-mix(in srgb, var(--card), black 10%));
+}
+
+.gem-facet::before, 
+.gem-facet::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.03);
+  transform-origin: center;
+}
+
+.gem-facet::before {
+  top: 0;
+  left: 0;
+  right: 45%;
+  bottom: 45%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+}
+
+.gem-facet::after {
+  top: 45%;
+  left: 45%;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(315deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.01));
+}
+
+/* Premium price tag styling */
+.price-tag {
+  @apply relative text-sm font-bold inline-flex items-center justify-center px-3 py-1 rounded-full;
+  background: var(--gradient-gold);
+  color: #000;
+  box-shadow: 0 2px 5px rgba(212, 165, 32, 0.3), 0 0 0 1px rgba(212, 165, 32, 0.2);
+}
+
+.price-tag::before {
+  content: '';
+  @apply absolute -left-1 top-1/2 w-2 h-2 rounded-full -translate-y-1/2;
+  background: var(--background);
+  border: 1px solid rgba(212, 165, 32, 0.5);
+}
+
+/* Layout & Container Styles */
+.page-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full;
+}
+
+.section-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12;
+}
+
+.content-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6;
+}
+
+/* Add these new utility classes at the end of the file */
+.compact-layout {
+  --content-spacing: 1rem;
+  --element-spacing: 0.5rem;
+}
+
+.normal-layout {
+  --content-spacing: 1.5rem;
+  --element-spacing: 0.75rem;
+}
+
+.wide-layout {
+  --content-spacing: 2rem;
+  --element-spacing: 1rem;
+}
+
+/* Improved card hover effects */
+.hover-card-subtle {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-card-subtle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.hover-card-glow {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-card-glow:hover {
+  box-shadow: 0 0 15px 2px rgba(var(--primary), 0.3);
+}
+
+/* Improved background patterns */
+.pattern-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.pattern-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Grid pattern for site background texture */
+.bg-grid-pattern {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Compact padding utilities */
+.p-compact {
+  padding: var(--element-spacing);
+}
+
+.px-compact {
+  padding-left: var(--element-spacing);
+  padding-right: var(--element-spacing);
+}
+
+.py-compact {
+  padding-top: var(--element-spacing);
+  padding-bottom: var(--element-spacing);
+}
+
+/* Improved text and border effects */
+.text-gradient-primary {
+  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(to right, hsl(var(--accent)), hsl(var(--primary)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-gradient {
+  border: 2px solid transparent;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  background-image: 
+    linear-gradient(to right, var(--background), var(--background)), 
+    linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
+}
+
+/* Improved glass effects */
+.glass-panel {
+  background: rgba(15, 15, 20, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Improved focus styling */
+.focus-ring {
+  transition: all 0.2s ease;
+  outline: 2px solid transparent;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Hover effects */
+.hover-card {
+  @apply transition-all duration-300 hover:border-primary/30 hover:bg-card/5;
+}
+
+/* Button variants */
+.button-outline {
+  @apply border border-border hover:bg-card/5 transition-colors rounded-lg;
+}
+
+.button-ghost {
+  @apply hover:bg-card/5 transition-colors rounded-lg;
+}
+
+/* Text styles */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+}
+
+/* Layout utilities */
+.content-wrapper {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Auth button specific styles */
+.auth-button {
+  position: relative;
+  z-index: 50; /* Ensure it's above other elements */
+  pointer-events: auto !important;
+}
+
+.auth-wrapper {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  z-index: 50;
+}
+
+/* Custom styles for dashboard tabs */
+.dashboard-tabs-list {
+  @apply bg-black/50 backdrop-blur-sm border border-zinc-800/60 p-1;
+}
+
+.dashboard-tab {
+  @apply text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50;
+}
+
+.dashboard-tab[data-state="active"] {
+  @apply bg-primary text-white font-medium shadow-md shadow-primary/20;
+}
+
+/* Brand-specific button style with red color */
+.red-button {
+  @apply bg-primary text-white font-medium hover:bg-primary/90 transition-all duration-200
+  rounded-md shadow-sm shadow-primary/20 hover:shadow-md hover:shadow-primary/30
+  hover:translate-y-[-1px] active:translate-y-[0px];
+}
+
+.red-button-outline {
+  @apply border-2 border-primary/70 text-primary bg-transparent font-medium
+  hover:border-primary hover:bg-primary/5 transition-all duration-200
+  rounded-md hover:translate-y-[-1px] active:translate-y-[0px];
+}
+
+/* Brand-specific glass panel with red accent */
+.red-glass-panel {
+  background: rgba(15, 15, 20, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(209, 47, 37, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes pulse-subtle {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.fade-mask {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+}
+
+.tag-selector-popover {
+  @apply bg-background border-border;
+}
+

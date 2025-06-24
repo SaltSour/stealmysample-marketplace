@@ -1,0 +1,273 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  output        = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String     @id @default(cuid())
+  name           String?
+  email          String?    @unique
+  emailVerified  DateTime?
+  image          String?
+  password       String?
+  role           UserRole   @default(USER)
+  status         UserStatus @default(ACTIVE)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  isCreator      Boolean    @default(false)
+  username       String?    @unique
+  accounts       Account[]
+  cart           Cart?
+  creatorProfile Creator?
+  orders         Order[]
+  sessions       Session[]
+  downloads      SampleDownload[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Creator {
+  id              String       @id @default(cuid())
+  userId          String       @unique
+  bio             String?
+  website         String?
+  socials         Json?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  isVerified      Boolean      @default(false)
+  stripeAccountId String?
+  payoutEnabled   Boolean      @default(false)
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  samplePacks     SamplePack[]
+
+  @@map("creators")
+}
+
+model SamplePack {
+  title       String
+  slug        String      @unique
+  description String
+  price       Float       @default(0)
+  coverImage  String
+  creatorId   String
+  published   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  archived    Boolean     @default(false)
+  archivedAt  DateTime?
+  publishedAt DateTime?
+  category    String      @default("sample-pack")
+  uuid        String      @unique @default(cuid())
+  id          Int         @id @default(autoincrement())
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  creator     Creator     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  samples     Sample[]
+
+  @@map("sample_packs")
+}
+
+model Sample {
+  id            String      @id @default(cuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  title         String
+  slug          String?     @unique
+  description   String?
+  fileUrl       String
+  previewUrl    String?
+  waveformUrl   String?
+  stemsUrl      String?
+  midiUrl       String?
+  waveformData  String?
+  duration      Float?
+  bpm           Int?
+  key           String?
+  genre         String?
+  lufs          Float?
+  truePeak      Float?
+  sampleRate    Int?
+  bitDepth      Int?
+  channels      Int?
+  peakAmplitude Float?
+  isProcessed   Boolean     @default(false)
+  hasWav        Boolean     @default(true)
+  hasStems      Boolean     @default(false)
+  hasMidi       Boolean     @default(false)
+  wavPrice      Float?      @default(2.95)
+  stemsPrice    Float?      @default(4.95)
+  midiPrice     Float?      @default(1.00)
+  format        String?
+  samplePackId  Int
+  tags          Tag[]       @relation("SampleTags")
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  samplePack    SamplePack  @relation(fields: [samplePackId], references: [id], onDelete: Cascade)
+  downloads     SampleDownload[]
+
+  @@map("samples")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  samples   Sample[] @relation("SampleTags")
+
+  @@map("tags")
+}
+
+model SampleDownload {
+  id        String   @id @default(cuid())
+  sampleId  String
+  userId    String
+  downloadedAt DateTime @default(now())
+  ipAddress String?
+  userAgent String?
+  format    SampleFormat @default(WAV)
+  
+  sample    Sample   @relation(fields: [sampleId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("sample_downloads")
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  items     CartItem[]
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("carts")
+}
+
+model CartItem {
+  id           String       @id @default(cuid())
+  cartId       String
+  sampleId     String?
+  format       SampleFormat
+  price        Float
+  quantity     Int          @default(1)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  samplePackId Int?
+  cart         Cart         @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  sample       Sample?      @relation(fields: [sampleId], references: [id])
+  samplePack   SamplePack?  @relation(fields: [samplePackId], references: [id])
+
+  @@unique([cartId, sampleId, samplePackId, format])
+  @@map("cart_items")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String
+  status        OrderStatus @default(PENDING)
+  totalAmount   Float
+  paymentIntent String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[]
+  user          User        @relation(fields: [userId], references: [id])
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id           String       @id @default(cuid())
+  orderId      String
+  sampleId     String?
+  price        Float
+  createdAt    DateTime     @default(now())
+  samplePackId Int?
+  format       SampleFormat @default(WAV)
+  order        Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  sample       Sample?      @relation(fields: [sampleId], references: [id])
+  samplePack   SamplePack?  @relation(fields: [samplePackId], references: [id])
+
+  @@map("order_items")
+}
+
+enum UserRole {
+  USER
+  CREATOR
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  COMPLETED
+  CANCELLED
+}
+
+enum SampleKind {
+  LOOP
+  ONESHOT
+  DRUMKIT
+  PRESET
+  MIDI
+  STEM
+  TEMPLATE
+  SOUNDKIT
+}
+
+enum SampleFormat {
+  WAV
+  STEMS
+  MIDI
+}

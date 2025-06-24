@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "buildCommand": "node scripts/prebuild-route-groups.js && rm -rf .next && npx prisma generate && next build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "functions": {
+    "app/api/**/*": {
+      "memory": 1024
+    }
+  },
+  "env": {
+    "PRISMA_GENERATE_DURING_BUILD": "true"
+  },
+  "routes": [
+    { "src": "/", "dest": "/marketplace" },
+    { "src": "/main", "dest": "/main" },
+    { "src": "/legal", "dest": "/legal" },
+    { "src": "/auth", "dest": "/auth" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/" }
+  ]
+} 
